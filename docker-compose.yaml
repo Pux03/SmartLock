@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:18
+    container_name: rwa-postgres
+    environment:
+      POSTGRES_DB: postgres # Dodajte ako želite specifičnu bazu
+      POSTGRES_PASSWORD: 05042003jovan
+      PGDATA: /var/lib/postgresql/18/docker
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_lib:/var/lib/postgresql
+    restart: unless-stopped
+    networks:
+      - postgres-network
+
+volumes:
+  postgres_data:
+  postgres_lib:
+
+networks:
+  postgres-network:
+    driver: bridge

@@ -1,13 +1,7 @@
 import { LockerGroup } from 'src/lockergroup/entities/lockergroup.entity';
 import { User } from 'src/user/entities/user.entity';
-export declare enum LockerStatus {
-    FREE = "FREE",
-    OCCUPIED = "OCCUPIED"
-}
-export declare enum LockedState {
-    LOCKED = "LOCKED",
-    UNLOCKED = "UNLOCKED"
-}
+import { LockerStatus } from 'src/common/enums/locker_status';
+import { LockedState } from 'src/common/enums/locker_state';
 export declare class Locker {
     id: number;
     serial: string;

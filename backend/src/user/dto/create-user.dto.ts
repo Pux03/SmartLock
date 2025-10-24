@@ -1,6 +1,4 @@
-import { Company } from "src/company/entities/company.entity";
-import { UserRole } from "../entities/user.entity";
-import { Locker } from "src/locker/entities/locker.entity";
+import { UserRole } from "src/common/enums/user_role";
 
 export class CreateUserDto {
     firstName: string;
@@ -8,6 +6,6 @@ export class CreateUserDto {
     email: string;
     password: string;
     role: UserRole;
-    company: Company;
-    locker: Locker;
+    companyId: number;
+    lockerId?: number;
 }

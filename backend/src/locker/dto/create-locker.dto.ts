@@ -1,5 +1,6 @@
+import { LockedState } from "src/common/enums/locker_state";
+import { LockerStatus } from "src/common/enums/locker_status";
 import { LockerGroup } from "src/lockergroup/entities/lockergroup.entity";
-import { LockedState, LockerStatus } from "../entities/locker.entity";
 import { User } from "src/user/entities/user.entity";
 
 export class CreateLockerDto {
@@ -8,6 +9,6 @@ export class CreateLockerDto {
     status: LockerStatus
     x: number;
     y: number;
-    locked: LockedState
+    locked: LockedState;
     lockerGroupId: number;
 }

@@ -1,10 +1,6 @@
 import { Company } from 'src/company/entities/company.entity';
 import { Locker } from 'src/locker/entities/locker.entity';
-export declare enum UserRole {
-    SUPER_ADMIN = "SUPER_ADMIN",
-    ADMIN = "ADMIN",
-    USER = "USER"
-}
+import { UserRole } from 'src/common/enums/user_role';
 export declare class User {
     id: number;
     firstName: string;
@@ -13,5 +9,6 @@ export declare class User {
     password: string;
     role: UserRole;
     company: Company;
-    locker: Locker;
+    locker: Locker | null;
 }
+export { UserRole };

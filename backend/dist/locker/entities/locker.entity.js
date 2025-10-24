@@ -9,20 +9,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Locker = exports.LockedState = exports.LockerStatus = void 0;
+exports.Locker = void 0;
 const typeorm_1 = require("typeorm");
 const lockergroup_entity_1 = require("../../lockergroup/entities/lockergroup.entity");
 const user_entity_1 = require("../../user/entities/user.entity");
-var LockerStatus;
-(function (LockerStatus) {
-    LockerStatus["FREE"] = "FREE";
-    LockerStatus["OCCUPIED"] = "OCCUPIED";
-})(LockerStatus || (exports.LockerStatus = LockerStatus = {}));
-var LockedState;
-(function (LockedState) {
-    LockedState["LOCKED"] = "LOCKED";
-    LockedState["UNLOCKED"] = "UNLOCKED";
-})(LockedState || (exports.LockedState = LockedState = {}));
+const locker_status_1 = require("../../common/enums/locker_status");
+const locker_state_1 = require("../../common/enums/locker_state");
 let Locker = class Locker {
     id;
     serial;
@@ -55,11 +47,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Locker.prototype, "y", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: LockerStatus, default: LockerStatus.FREE }),
+    (0, typeorm_1.Column)({ type: 'enum', enum: locker_status_1.LockerStatus, default: locker_status_1.LockerStatus.FREE }),
     __metadata("design:type", String)
 ], Locker.prototype, "status", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: LockedState, default: LockedState.LOCKED }),
+    (0, typeorm_1.Column)({ type: 'enum', enum: locker_state_1.LockedState, default: locker_state_1.LockedState.LOCKED }),
     __metadata("design:type", String)
 ], Locker.prototype, "locked", void 0);
 __decorate([

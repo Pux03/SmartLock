@@ -15,26 +15,39 @@ const user_module_1 = require("./user/user.module");
 const company_module_1 = require("./company/company.module");
 const lockergroup_module_1 = require("./lockergroup/lockergroup.module");
 const locker_module_1 = require("./locker/locker.module");
+const auth_module_1 = require("./auth/auth.module");
+const config_1 = require("@nestjs/config");
+const dotenv_1 = require("dotenv");
+const path_1 = require("path");
+(0, dotenv_1.config)({ path: (0, path_1.resolve)(__dirname, '../../.env') });
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forRoot({
-                type: 'postgres',
-                host: 'localhost',
-                port: 5432,
-                username: 'postgres',
-                password: '05042003jovan',
-                database: 'smartlock',
-                entities: [__dirname + '/**/*.entity{.ts,.js}'],
-                synchronize: true,
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+            }),
+            typeorm_1.TypeOrmModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                useFactory: (configService) => ({
+                    type: 'postgres',
+                    host: process.env.DB_HOST,
+                    port: parseInt(process.env.DB_PORT || "5432"),
+                    username: process.env.DB_USERNAME,
+                    password: process.env.DB_PASSWORD,
+                    database: process.env.DB_NAME,
+                    entities: [__dirname + '/**/*.entity{.ts,.js}'],
+                    synchronize: true,
+                }),
+                inject: [config_1.ConfigService],
             }),
             user_module_1.UserModule,
             company_module_1.CompanyModule,
             lockergroup_module_1.LockergroupModule,
-            locker_module_1.LockerModule
+            locker_module_1.LockerModule,
+            auth_module_1.AuthModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

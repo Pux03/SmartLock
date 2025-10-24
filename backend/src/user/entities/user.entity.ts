@@ -1,12 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
 import { Company } from 'src/company/entities/company.entity';
 import { Locker } from 'src/locker/entities/locker.entity';
+import { UserRole } from 'src/common/enums/user_role';
 
-export enum UserRole {
-    SUPER_ADMIN = 'SUPER_ADMIN',
-    ADMIN = 'ADMIN',
-    USER = 'USER',
-}
 
 @Entity()
 export class User {
@@ -33,5 +29,7 @@ export class User {
 
     @OneToOne(() => Locker, (locker) => locker.user, { nullable: true })
     @JoinColumn()
-    locker: Locker;
+    locker: Locker | null;
 }
+export { UserRole };
+
