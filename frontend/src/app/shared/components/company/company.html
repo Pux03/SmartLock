@@ -1,0 +1,25 @@
+<div class="company-container">
+  <div class="navbar">
+    <div class="company-title">{{ companyName }}</div>
+  </div>
+  <div class="company-body">
+    <div class="vertical-bar">
+      <div class="section-selector">
+        <button (click)="selected = 'view-users'">View all users</button>
+        <button (click)="selected = 'add-users'">Add users</button>
+        <button (click)="selected = 'view-locker-groups'">View locker groups</button>
+        <button (click)="selected = 'add-locker-groups'">Add locker groups</button>
+      </div>
+      <div class="avatar-container">
+        <app-avatar [name]="companyUser"></app-avatar>
+        <div>{{ companyUser }}</div>
+      </div>
+    </div>
+    <div class="data-section">
+      <app-view-users *ngIf="selected === 'view-users'"></app-view-users>
+      <app-add-users *ngIf="selected === 'add-users'"></app-add-users>
+      <app-view-locker-groups *ngIf="selected === 'view-locker-groups'"></app-view-locker-groups>
+      <app-add-locker-groups *ngIf="selected === 'add-locker-groups'"></app-add-locker-groups>
+    </div>
+  </div>
+</div>

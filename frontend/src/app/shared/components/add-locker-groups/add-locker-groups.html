@@ -1,0 +1,34 @@
+<div class="locker-arrangement-container">
+  <div class="canvas-area">
+    <div *ngFor="let locker of lockers; trackBy: trackByLocker" [ngStyle]="getLockerStyle(locker)">
+      <app-locker
+        [locker]="locker"
+        [viewMode]="false"
+        [editMode]="false"
+        [isPositionFree]="isPositionFree"
+        (onAdd)="addLocker(locker, $event)"
+        (onUpdate)="updateLocker($event)"
+        (onDelete)="deleteLocker($event)"
+      >
+      </app-locker>
+    </div>
+  </div>
+</div>
+
+<!-- Control buttons -->
+<div class="control-buttons">
+  <input
+    type="text"
+    [placeholder]="'Enter locker group name'"
+    [(ngModel)]="lockerGroupName"
+    class="locker-group-input"
+  />
+  <button
+    (click)="saveArrangement()"
+    [disabled]="isLoading"
+    class="control-btn save-btn"
+    [class.loading]="isLoading"
+  >
+    {{ isLoading ? 'Saving...' : 'Save Arrangement' }}
+  </button>
+</div>

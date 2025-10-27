@@ -1,0 +1,72 @@
+.navbar{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    color: white;
+    background-color: #34495e;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+.navbar div{
+    padding: 2vh;
+}
+
+.company-title{
+    font-family: sans-serif;
+    font-size: 3rem;
+}
+.company-body{
+    display: flex;
+    width: 100vw;
+    height: 90vh;
+}
+.vertical-bar{
+    width: 15%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    background-color: #2c3e50;
+}
+.avatar-container{
+    padding: 1em 0;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 3vh;
+    background-color: #2980b9;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* senka oko cele sekcije */
+}
+
+.avatar-container div{
+    font-size: 1.3rem;
+    color: white;
+    font-family: sans-serif;
+}
+
+.data-section{
+    width: 85%;
+}
+
+.section-selector{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.section-selector button{
+    background: none;
+    color: white;
+    border: 1px solid black;
+    font-family: sans-serif;
+    cursor: pointer;
+    padding: 1px;
+    height: 10vh;
+    background-color: #2980b9;
+}
+
+.section-selector button:hover{
+    background-color: #4390c3;
+}

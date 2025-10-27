@@ -12,6 +12,7 @@ export declare class UserService {
     create(createUserDto: CreateUserDto): Promise<User>;
     findByEmail(email: string): Promise<User | null>;
     findAll(): Promise<User[]>;
+    findByCompany(companyId: number): Promise<User[]>;
     findOne(id: number): Promise<User | null>;
     assignLockerToUser(userId: number, lockerId: number): Promise<Locker>;
     update(id: number, updateUserDto: UpdateUserDto): string;

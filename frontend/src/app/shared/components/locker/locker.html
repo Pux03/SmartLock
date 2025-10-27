@@ -1,0 +1,117 @@
+<div
+  class="locker-container"
+  [class.edit-mode]="isInEditMode"
+  [class.hovered]="isHovered"
+  (mouseenter)="isHovered = true"
+  (mouseleave)="isHovered = false"
+>
+  <!-- Action buttons -->
+  <div class="action-buttons" [class.visible]="isHovered">
+    <!-- Edit button (only in edit mode when not editing) -->
+    <button
+      *ngIf="editMode && !isEditing"
+      (click)="startEditing()"
+      class="action-btn edit-btn"
+      title="Edit Locker"
+    >
+      ✎
+    </button>
+
+    <!-- Save and Cancel buttons (when editing) -->
+    <ng-container *ngIf="editMode && isEditing">
+      <button
+        (click)="handleSave()"
+        [disabled]="isSaving"
+        class="action-btn save-btn"
+        title="Save Locker"
+      >
+        {{ isSaving ? '⏳' : '✓' }}
+      </button>
+      <button (click)="handleCancel()" class="action-btn cancel-btn" title="Cancel Edit">✕</button>
+    </ng-container>
+
+    <!-- Delete button -->
+    <button
+      *ngIf="(editMode || !viewMode) && !isEditing"
+      (click)="deleteLocker()"
+      class="action-btn delete-btn"
+      title="Delete Locker"
+    >
+      ×
+    </button>
+  </div>
+
+  <!-- Top button (only in create mode) -->
+  <div class="button-row top-button">
+    <button
+      *ngIf="!viewMode && !editMode && isPositionFree(locker.x, locker.y - 1) && locker.y - 1 > -3"
+      (click)="addLockerDirection('top')"
+      class="direction-btn"
+      title="Add Above"
+    >
+      ↑
+    </button>
+  </div>
+
+  <!-- Middle section -->
+  <div class="middle-section">
+    <!-- Left button -->
+    <div class="side-button">
+      <button
+        *ngIf="
+          !viewMode && !editMode && isPositionFree(locker.x - 1, locker.y) && locker.x - 1 > -4
+        "
+        (click)="addLockerDirection('left')"
+        class="direction-btn"
+        title="Add Left"
+      >
+        ←
+      </button>
+    </div>
+
+    <!-- Input fields -->
+    <div class="input-container">
+      <input
+        type="text"
+        [value]="isInEditMode ? localLocker.serial : locker.serial"
+        (input)="updateLocalSerial($any($event.target).value)"
+        [placeholder]="isReadOnly ? 'No Serial' : 'Enter Serial'"
+        [readonly]="isReadOnly"
+        [class.edit-active]="isInEditMode"
+        [class.readonly]="isReadOnly"
+        class="locker-input"
+      />
+    </div>
+
+    <!-- Right button -->
+    <div class="side-button">
+      <button
+        *ngIf="!viewMode && !editMode && isPositionFree(locker.x + 1, locker.y) && locker.x + 1 < 4"
+        (click)="addLockerDirection('right')"
+        class="direction-btn"
+        title="Add Right"
+      >
+        →
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom button -->
+  <div class="button-row bottom-button">
+    <button
+      *ngIf="!viewMode && !editMode && isPositionFree(locker.x, locker.y + 1) && locker.y + 1 < 3"
+      (click)="addLockerDirection('bottom')"
+      class="direction-btn"
+      title="Add Below"
+    >
+      ↓
+    </button>
+  </div>
+
+  <div class="locker-info">
+    <div class="position-indicator">({{ locker.x }}, {{ locker.y }})</div>
+    <div class="status" [ngStyle]="{ color: getStatusColor(locker.status) }">
+      {{ locker.status }}
+    </div>
+  </div>
+</div>

@@ -1,19 +1,51 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateLockergroupDto } from './dto/create-lockergroup.dto';
 import { UpdateLockergroupDto } from './dto/update-lockergroup.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { LockerGroup } from './entities/lockergroup.entity';
+import { Repository } from 'typeorm';
+import { Company } from 'src/company/entities/company.entity';
 
 @Injectable()
 export class LockergroupService {
-  create(createLockergroupDto: CreateLockergroupDto) {
-    return 'This action adds a new lockergroup';
+  constructor(
+    @InjectRepository(LockerGroup)
+    private lockerGroupRepository: Repository<LockerGroup>,
+    @InjectRepository(Company)
+    private companyRepository: Repository<Company>
+  ) { }
+  async create(createLockergroupDto: CreateLockergroupDto): Promise<LockerGroup> {
+    const company = await this.companyRepository.findOne({ where: { id: createLockergroupDto.company.id } });
+    if (!company) throw new NotFoundException("Company not found!");
+
+    const lockerGroup = this.lockerGroupRepository.create({
+      name: createLockergroupDto.name,
+      company: createLockergroupDto.company
+    });
+
+    return this.lockerGroupRepository.save(lockerGroup);
   }
 
-  findAll() {
-    return `This action returns all lockergroup`;
+  async findAll(): Promise<LockerGroup[]> {
+    return this.lockerGroupRepository.find({ relations: ['company', 'lockers'] });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} lockergroup`;
+  async findByCompany(companyId: number): Promise<LockerGroup[]> {
+    return this.lockerGroupRepository.find({
+      where: {
+        company: { id: companyId }
+      },
+      relations: ['company', 'lockers']
+    });
+  }
+
+  async findOne(id: number): Promise<LockerGroup> {
+    const lg = await this.lockerGroupRepository.findOne({
+      where: { id },
+      relations: ['company', 'lockers']
+    });
+    if (!lg) throw new NotFoundException('Locker group not found');
+    return lg;
   }
 
   update(id: number, updateLockergroupDto: UpdateLockergroupDto) {

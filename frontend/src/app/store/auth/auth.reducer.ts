@@ -9,10 +9,10 @@ export interface AuthState {
 }
 
 export const initialState: AuthState = {
-    user: null,
-    accessToken: null,
+    user: JSON.parse(localStorage.getItem('user') || 'null'),
+    accessToken: localStorage.getItem('token'),
     loading: false,
-    error: null,
+    error: null
 };
 
 export const authReducer = createReducer(

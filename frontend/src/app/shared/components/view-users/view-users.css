@@ -1,0 +1,27 @@
+.user-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.user{
+    font-family: sans-serif;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 15vh;
+    box-shadow: 1px 1px 1px 1px black;
+}
+.user div{
+    width: 20%;
+    display: flex;
+    justify-content: center;
+}
+
+.user-locker{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}

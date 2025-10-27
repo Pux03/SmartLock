@@ -28,6 +28,9 @@ let UserController = class UserController {
     findAll() {
         return this.userService.findAll();
     }
+    findByCompany(companyId) {
+        return this.userService.findByCompany(+companyId);
+    }
     findOne(id) {
         return this.userService.findOne(+id);
     }
@@ -52,6 +55,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('company/:companyId'),
+    __param(0, (0, common_1.Param)('companyId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "findByCompany", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

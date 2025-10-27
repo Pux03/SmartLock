@@ -51,6 +51,14 @@ let UserService = class UserService {
     findAll() {
         return this.userRepository.find();
     }
+    findByCompany(companyId) {
+        return this.userRepository.find({
+            where: {
+                company: { id: companyId }
+            },
+            relations: ['company', 'locker']
+        });
+    }
     findOne(id) {
         return this.userRepository.findOne({ where: { id } });
     }

@@ -6,6 +6,7 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { Company } from 'src/company/entities/company.entity';
 import { Locker } from 'src/locker/entities/locker.entity';
+import { combineAll } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -37,9 +38,17 @@ export class UserService {
       relations: ['company', 'locker']
     })
   }
-
   findAll() {
     return this.userRepository.find();
+  }
+
+  findByCompany(companyId: number) {
+    return this.userRepository.find({
+      where: {
+        company: { id: companyId }
+      },
+      relations: ['company', 'locker']
+    });
   }
 
   findOne(id: number) {

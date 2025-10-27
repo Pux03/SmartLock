@@ -28,6 +28,9 @@ let LockergroupController = class LockergroupController {
     findAll() {
         return this.lockergroupService.findAll();
     }
+    findByCompany(companyId) {
+        return this.lockergroupService.findByCompany(+companyId);
+    }
     findOne(id) {
         return this.lockergroupService.findOne(+id);
     }
@@ -53,6 +56,13 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], LockergroupController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.Get)('company/:companyId'),
+    __param(0, (0, common_1.Param)('companyId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], LockergroupController.prototype, "findByCompany", null);
+__decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -75,7 +85,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], LockergroupController.prototype, "remove", null);
 exports.LockergroupController = LockergroupController = __decorate([
-    (0, common_1.Controller)('lockergroup'),
+    (0, common_1.Controller)('locker-group'),
     __metadata("design:paramtypes", [lockergroup_service_1.LockergroupService])
 ], LockergroupController);
 //# sourceMappingURL=lockergroup.controller.js.map

@@ -10,11 +10,16 @@ exports.LockergroupModule = void 0;
 const common_1 = require("@nestjs/common");
 const lockergroup_service_1 = require("./lockergroup.service");
 const lockergroup_controller_1 = require("./lockergroup.controller");
+const typeorm_1 = require("@nestjs/typeorm");
+const company_entity_1 = require("../company/entities/company.entity");
+const lockergroup_entity_1 = require("./entities/lockergroup.entity");
+const locker_entity_1 = require("../locker/entities/locker.entity");
 let LockergroupModule = class LockergroupModule {
 };
 exports.LockergroupModule = LockergroupModule;
 exports.LockergroupModule = LockergroupModule = __decorate([
     (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([company_entity_1.Company, lockergroup_entity_1.LockerGroup, locker_entity_1.Locker])],
         controllers: [lockergroup_controller_1.LockergroupController],
         providers: [lockergroup_service_1.LockergroupService],
     })

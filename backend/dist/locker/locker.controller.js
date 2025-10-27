@@ -25,8 +25,18 @@ let LockerController = class LockerController {
     create(createLockerDto) {
         return this.lockerService.create(createLockerDto);
     }
+    async addMultiple(lockers) {
+        const createdLockers = await Promise.all(lockers.map(locker => this.lockerService.create(locker)));
+        return createdLockers;
+    }
+    createBulk(createLockerDtos) {
+        return this.lockerService.createBulk(createLockerDtos);
+    }
     findAll() {
         return this.lockerService.findAll();
+    }
+    findByLockerGroup(lockerGroupId) {
+        return this.lockerService.findByLockerGroup(+lockerGroupId);
     }
     findOne(id) {
         return this.lockerService.findOne(+id);
@@ -47,11 +57,32 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], LockerController.prototype, "create", null);
 __decorate([
+    (0, common_1.Post)('add-lockers'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Array]),
+    __metadata("design:returntype", Promise)
+], LockerController.prototype, "addMultiple", null);
+__decorate([
+    (0, common_1.Post)('bulk'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Array]),
+    __metadata("design:returntype", void 0)
+], LockerController.prototype, "createBulk", null);
+__decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], LockerController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('group/:lockerGroupId'),
+    __param(0, (0, common_1.Param)('lockerGroupId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], LockerController.prototype, "findByLockerGroup", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

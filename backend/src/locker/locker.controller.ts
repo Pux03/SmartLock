@@ -5,16 +5,34 @@ import { UpdateLockerDto } from './dto/update-locker.dto';
 
 @Controller('locker')
 export class LockerController {
-  constructor(private readonly lockerService: LockerService) {}
+  constructor(private readonly lockerService: LockerService) { }
 
   @Post()
   create(@Body() createLockerDto: CreateLockerDto) {
     return this.lockerService.create(createLockerDto);
   }
 
+  @Post('add-lockers')
+  async addMultiple(@Body() lockers: CreateLockerDto[]) {
+    const createdLockers = await Promise.all(
+      lockers.map(locker => this.lockerService.create(locker))
+    );
+
+    return createdLockers;
+  }
+
+  @Post('bulk')
+  createBulk(@Body() createLockerDtos: CreateLockerDto[]) {
+    return this.lockerService.createBulk(createLockerDtos);
+  }
   @Get()
   findAll() {
     return this.lockerService.findAll();
+  }
+
+  @Get('group/:lockerGroupId')
+  findByLockerGroup(@Param('lockerGroupId') lockerGroupId: string) {
+    return this.lockerService.findByLockerGroup(+lockerGroupId);
   }
 
   @Get(':id')
