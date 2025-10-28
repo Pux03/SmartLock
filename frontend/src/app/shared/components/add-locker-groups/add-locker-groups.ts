@@ -108,7 +108,6 @@ export class AddLockerGroups implements OnInit {
 
         this.isLoading = true;
         try {
-            // Prepare locker data for the store
             const lockerData = this.lockers.map(locker => ({
                 serial: locker.serial,
                 status: locker.status,
@@ -117,14 +116,12 @@ export class AddLockerGroups implements OnInit {
                 locked: 'UNLOCKED',
             }));
 
-            // Use the store to create locker group with lockers
             this.store.dispatch(LockerGroupActions.createLockerGroup({
                 name: this.lockerGroupName,
                 companyId: this.companyId,
                 lockers: lockerData
             }));
 
-            // Reset form after successful creation
             this.lockers = [{
                 id: Date.now(),
                 group: { id: 0, name: "", companyId: 0, lockers: [] },

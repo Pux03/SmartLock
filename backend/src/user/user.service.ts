@@ -7,6 +7,7 @@ import { Repository, IsNull } from 'typeorm';
 import { Company } from 'src/company/entities/company.entity';
 import { Locker } from 'src/locker/entities/locker.entity';
 import { LockerStatus } from 'src/common/enums/locker_status';
+import * as bcrypt from 'bcrypt';
 import { combineAll } from 'rxjs';
 
 @Injectable()
@@ -20,6 +21,10 @@ export class UserService {
 
   }
   async create(createUserDto: CreateUserDto): Promise<User> {
+    if (createUserDto.password) {
+      createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
+    }
+
     const user = this.userRepository.create(createUserDto);
     if (createUserDto.companyId) {
       const company = await this.companyRepository.findOne({ where: { id: createUserDto.companyId } });
@@ -74,11 +79,9 @@ export class UserService {
       throw new Error('User or Locker not found');
     }
 
-    // Update the user's locker reference
     user.locker = locker;
     await this.userRepository.save(user);
 
-    // Update locker status to OCCUPIED
     locker.status = LockerStatus.OCCUPIED;
     await this.lockerRepository.save(locker);
 

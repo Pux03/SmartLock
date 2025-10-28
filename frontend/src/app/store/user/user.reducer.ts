@@ -19,7 +19,6 @@ export const initialState: UserState = {
 export const userReducer = createReducer(
     initialState,
 
-    // Load Company Users
     on(UserActions.loadCompanyUsers, (state) => ({
         ...state,
         loading: true,
@@ -36,7 +35,6 @@ export const userReducer = createReducer(
         error
     })),
 
-    // Load Users Without Lockers
     on(UserActions.loadUsersWithoutLockers, (state) => ({
         ...state,
         loading: true,
@@ -53,7 +51,6 @@ export const userReducer = createReducer(
         error
     })),
 
-    // Assign Locker To User
     on(UserActions.assignLockerToUser, (state) => ({
         ...state,
         loading: true,
@@ -70,7 +67,6 @@ export const userReducer = createReducer(
         error
     })),
 
-    // Create User
     on(UserActions.createUser, (state) => ({
         ...state,
         loading: true,
@@ -87,7 +83,6 @@ export const userReducer = createReducer(
         error
     })),
 
-    // Update User
     on(UserActions.updateUser, (state) => ({
         ...state,
         loading: true,
@@ -104,7 +99,6 @@ export const userReducer = createReducer(
         error
     })),
 
-    // Delete User
     on(UserActions.deleteUser, (state) => ({
         ...state,
         loading: true,

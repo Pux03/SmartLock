@@ -1,27 +1,61 @@
-.user-container{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-.user{
-    font-family: sans-serif;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 15vh;
-    box-shadow: 1px 1px 1px 1px black;
-}
-.user div{
-    width: 20%;
-    display: flex;
-    justify-content: center;
+.company-info {
+    padding: 20px;
+  background: #f8f9fa;
+  max-height: 100%;
+  font-family: sans-serif;
 }
 
-.user-locker{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
+.users-container {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+}
+
+.user {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 15px;
+  align-items: start;
+}
+
+.user-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.user-fullname {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.user-email,
+.user-phone,
+.user-role {
+  font-size: 14px;
+  color: #333;
+}
+
+.user-locker {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: #666;
+}
+
+.no-users {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 40px;
 }

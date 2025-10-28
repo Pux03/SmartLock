@@ -2,19 +2,30 @@
   <div *ngIf="users && users.length > 0; else noUsers">
     <div class="users-container" *ngFor="let user of users">
       <div class="user">
-        <div class="user-fullname">{{ user.firstName }} {{ user.lastName }}</div>
-        <div class="user-email">{{ user.email }}</div>
-        <div class="user-phone">{{ user.phone }}</div>
-        <div class="user-role">{{ user.role }}</div>
-        <div class="user-locker">
-          <div>{{ user.locker?.lockerGroup }}</div>
-          <div>{{ user.locker?.serial }}</div>
+        <div class="user-field">
+          <div class="field-label">Name</div>
+          <div class="user-fullname">{{ user.firstName }} {{ user.lastName }}</div>
+        </div>
+        <div class="user-field">
+          <div class="field-label">Email</div>
+          <div class="user-email">{{ user.email }}</div>
+        </div>
+        <div class="user-field">
+          <div class="field-label">Role</div>
+          <div class="user-role">{{ user.role }}</div>
+        </div>
+        <div class="user-field">
+          <div class="field-label">Locker</div>
+          <div class="user-locker">
+            <div>{{ user.locker || 'No locker' }}</div>
+            <div>{{ user.locker?.serial || '' }}</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <ng-template #noUsers>
-    <p>No users found for this company.</p>
+    <p class="no-users">No users found for this company.</p>
   </ng-template>
 </div>

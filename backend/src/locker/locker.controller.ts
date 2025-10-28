@@ -21,10 +21,6 @@ export class LockerController {
     return createdLockers;
   }
 
-  @Post('bulk')
-  createBulk(@Body() createLockerDtos: CreateLockerDto[]) {
-    return this.lockerService.createBulk(createLockerDtos);
-  }
   @Get()
   findAll() {
     return this.lockerService.findAll();

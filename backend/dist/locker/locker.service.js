@@ -26,11 +26,9 @@ let LockerService = class LockerService {
         this.lockerGroupRepository = lockerGroupRepository;
     }
     async create(createLockerDto) {
-        console.log('Creating locker with data:', createLockerDto);
         const lockerGroup = await this.lockerGroupRepository.findOne({ where: { id: createLockerDto.group.id } });
         if (!lockerGroup)
             throw new common_1.NotFoundException("Locker group not found!");
-        console.log('Found locker group:', lockerGroup);
         const locker = this.lockerRepository.create({
             serial: createLockerDto.serial,
             group: lockerGroup,
@@ -40,25 +38,6 @@ let LockerService = class LockerService {
             locked: createLockerDto.locked,
         });
         return this.lockerRepository.save(locker);
-    }
-    async createBulk(createLockerDtos) {
-        console.log('Creating bulk lockers with data:', createLockerDtos);
-        const lockers = [];
-        for (const createLockerDto of createLockerDtos) {
-            const lockerGroup = await this.lockerGroupRepository.findOne({ where: { id: createLockerDto.group.id } });
-            if (!lockerGroup)
-                throw new common_1.NotFoundException(`Locker group not found for locker with serial: ${createLockerDto.serial}`);
-            const locker = this.lockerRepository.create({
-                serial: createLockerDto.serial,
-                group: lockerGroup,
-                x: createLockerDto.x,
-                y: createLockerDto.y,
-                status: createLockerDto.status,
-                locked: createLockerDto.locked,
-            });
-            lockers.push(locker);
-        }
-        return this.lockerRepository.save(lockers);
     }
     async findAll() {
         return this.lockerRepository.find({ relations: ['user'] });

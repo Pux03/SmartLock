@@ -18,7 +18,6 @@ export class UserEffects {
             mergeMap(({ companyId }) =>
                 this.companyService.getCompanyUsers(companyId).pipe(
                     map((users: any[]) => {
-                        console.log('Users from API:', users);
                         return UserActions.loadCompanyUsersSuccess({ users });
                     }),
                     catchError(error => of(UserActions.loadCompanyUsersFailure({ error: error.message })))

@@ -15,10 +15,8 @@ export class LockerService {
     private lockerGroupRepository: Repository<LockerGroup>
   ) { }
   async create(createLockerDto: CreateLockerDto): Promise<Locker> {
-    console.log('Creating locker with data:', createLockerDto);
     const lockerGroup = await this.lockerGroupRepository.findOne({ where: { id: createLockerDto.group.id } });
     if (!lockerGroup) throw new NotFoundException("Locker group not found!");
-    console.log('Found locker group:', lockerGroup);
 
     const locker = this.lockerRepository.create({
       serial: createLockerDto.serial,
@@ -30,30 +28,6 @@ export class LockerService {
     })
 
     return this.lockerRepository.save(locker);
-  }
-
-  async createBulk(createLockerDtos: CreateLockerDto[]): Promise<Locker[]> {
-    console.log('Creating bulk lockers with data:', createLockerDtos);
-
-    const lockers: Locker[] = [];
-
-    for (const createLockerDto of createLockerDtos) {
-      const lockerGroup = await this.lockerGroupRepository.findOne({ where: { id: createLockerDto.group.id } });
-      if (!lockerGroup) throw new NotFoundException(`Locker group not found for locker with serial: ${createLockerDto.serial}`);
-
-      const locker = this.lockerRepository.create({
-        serial: createLockerDto.serial,
-        group: lockerGroup,
-        x: createLockerDto.x,
-        y: createLockerDto.y,
-        status: createLockerDto.status,
-        locked: createLockerDto.locked,
-      });
-
-      lockers.push(locker);
-    }
-
-    return this.lockerRepository.save(lockers);
   }
 
   async findAll(): Promise<Locker[]> {

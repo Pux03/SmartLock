@@ -29,9 +29,6 @@ let LockerController = class LockerController {
         const createdLockers = await Promise.all(lockers.map(locker => this.lockerService.create(locker)));
         return createdLockers;
     }
-    createBulk(createLockerDtos) {
-        return this.lockerService.createBulk(createLockerDtos);
-    }
     findAll() {
         return this.lockerService.findAll();
     }
@@ -63,13 +60,6 @@ __decorate([
     __metadata("design:paramtypes", [Array]),
     __metadata("design:returntype", Promise)
 ], LockerController.prototype, "addMultiple", null);
-__decorate([
-    (0, common_1.Post)('bulk'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Array]),
-    __metadata("design:returntype", void 0)
-], LockerController.prototype, "createBulk", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

@@ -28,15 +28,14 @@ export class ViewUsers implements OnInit {
             this.loadUsers();
         }
 
-        // Subscribe to users from store
         this.store.select(UserSelectors.selectAllUsers).subscribe(users => {
             this.users = users;
         });
 
-        // Subscribe to loading state
         this.store.select(UserSelectors.selectUserLoading).subscribe(loading => {
             this.loading = loading;
         });
+
     }
 
     loadUsers() {
@@ -44,4 +43,6 @@ export class ViewUsers implements OnInit {
             this.store.dispatch(UserActions.loadCompanyUsers({ companyId: this.companyId }));
         }
     }
+
+
 }

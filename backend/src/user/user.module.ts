@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Locker } from 'src/locker/entities/locker.entity';
 import { Company } from 'src/company/entities/company.entity';
+import { LockerGroup } from 'src/lockergroup/entities/lockergroup.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Locker, Company])],
+  imports: [TypeOrmModule.forFeature([User, Locker, Company, LockerGroup])],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService]

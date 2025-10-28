@@ -155,7 +155,7 @@ export class ViewLockerGroups implements OnInit {
         return {
             position: 'absolute',
             left: `${locker.x * 280}px`,
-            top: `${locker.y * 240}px`
+            top: `${locker.y * 320}px`
         };
     }
 

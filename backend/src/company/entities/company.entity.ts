@@ -10,11 +10,9 @@ export class Company {
     @Column()
     name: string;
 
-    // Veza ka korisnicima kompanije
     @OneToMany(() => User, (user) => user.company)
     users: User[];
 
-    // Veza ka locker grupama kompanije
     @OneToMany(() => LockerGroup, (group) => group.company)
     lockerGroups: LockerGroup[];
 }

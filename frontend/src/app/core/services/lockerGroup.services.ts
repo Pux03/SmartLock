@@ -19,7 +19,6 @@ export class LockerGroupServices {
 
     createLockerGroup(name: string, companyId: number) {
         const locker = { company: { id: companyId } };
-        console.log(locker);
         return this.http.post<LockerGroup>(`${api}/locker-group`, {
             name,
             company: { id: companyId }

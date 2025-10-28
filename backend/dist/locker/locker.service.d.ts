@@ -8,7 +8,6 @@ export declare class LockerService {
     private lockerGroupRepository;
     constructor(lockerRepository: Repository<Locker>, lockerGroupRepository: Repository<LockerGroup>);
     create(createLockerDto: CreateLockerDto): Promise<Locker>;
-    createBulk(createLockerDtos: CreateLockerDto[]): Promise<Locker[]>;
     findAll(): Promise<Locker[]>;
     findByLockerGroup(lockerGroupId: number): string;
     findOne(id: number): string;

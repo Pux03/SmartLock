@@ -6,7 +6,6 @@ export declare class LockerController {
     constructor(lockerService: LockerService);
     create(createLockerDto: CreateLockerDto): Promise<import("./entities/locker.entity").Locker>;
     addMultiple(lockers: CreateLockerDto[]): Promise<import("./entities/locker.entity").Locker[]>;
-    createBulk(createLockerDtos: CreateLockerDto[]): Promise<import("./entities/locker.entity").Locker[]>;
     findAll(): Promise<import("./entities/locker.entity").Locker[]>;
     findByLockerGroup(lockerGroupId: string): string;
     findOne(id: string): string;

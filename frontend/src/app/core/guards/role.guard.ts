@@ -18,9 +18,7 @@ export class RoleGuard implements CanActivate {
         return this.store.select(selectUser).pipe(
             take(1),
             map(user => {
-                console.log('User role:', user?.role);
 
-                // Handle case where user might be null
                 if (!user) {
                     const storedUser = localStorage.getItem('user');
                     if (storedUser) {
@@ -32,8 +30,6 @@ export class RoleGuard implements CanActivate {
                 }
 
                 const requiredRole = route.data['role'];
-                console.log('Required role:', requiredRole);
-                console.log('Role match:', requiredRole === user.role);
 
                 if (!requiredRole) {
                     return true;

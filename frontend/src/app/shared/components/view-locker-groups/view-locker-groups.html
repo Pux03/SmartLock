@@ -1,5 +1,4 @@
 <div class="locker-arrangement-container">
-  <!-- Canvas area za prikaz lockera -->
   <div class="canvas-area">
     <div *ngFor="let locker of lockers; trackBy: trackByLocker" [ngStyle]="getLockerStyle(locker)">
       <app-locker
@@ -13,7 +12,6 @@
   </div>
 </div>
 
-<!-- Kontrole za izbor grupe -->
 <div class="control-buttons">
   <label for="groupSelect">Select Locker Group:</label>
   <select
@@ -28,5 +26,4 @@
   <button (click)="fetchLockerGroups()" class="control-btn refresh-btn">Refresh</button>
 </div>
 
-<!-- Loader / greška -->
 <div *ngIf="isLoading" class="loading-overlay">Loading locker groups...</div>
