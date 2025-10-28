@@ -8,6 +8,11 @@ export const selectAllUsers = createSelector(
     (state: UserState) => state.users
 );
 
+export const selectUsersWithoutLockers = createSelector(
+    selectUserState,
+    (state: UserState) => state.usersWithoutLockers
+);
+
 export const selectUserLoading = createSelector(
     selectUserState,
     (state: UserState) => state.loading

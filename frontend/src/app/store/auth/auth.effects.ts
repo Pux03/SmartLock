@@ -57,7 +57,7 @@ export class AuthEffects {
 
                 const redirectUrl = action.user.role === 'SUPER_ADMIN'
                     ? '/super-admin'
-                    : action.user.role === 'ADMIN' ? `/company/${action.user.companyId}` : '/';
+                    : action.user.role === 'ADMIN' ? `/company` : '/';
                 this.router.navigate([redirectUrl]);
             })
         ), { dispatch: false } // Važno: effect ne dispatch-uje novu akciju

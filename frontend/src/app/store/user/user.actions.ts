@@ -28,6 +28,36 @@ export const loadCompanyUsersFailure = createAction(
     props<{ error: string }>()
 );
 
+export const loadUsersWithoutLockers = createAction(
+    '[User] Load Users Without Lockers',
+    props<{ companyId: number }>()
+);
+
+export const loadUsersWithoutLockersSuccess = createAction(
+    '[User] Load Users Without Lockers Success',
+    props<{ users: any[] }>()
+);
+
+export const loadUsersWithoutLockersFailure = createAction(
+    '[User] Load Users Without Lockers Failure',
+    props<{ error: string }>()
+);
+
+export const assignLockerToUser = createAction(
+    '[User] Assign Locker To User',
+    props<{ userId: number; lockerId: number; companyId: number }>()
+);
+
+export const assignLockerToUserSuccess = createAction(
+    '[User] Assign Locker To User Success',
+    props<{ user: any }>()
+);
+
+export const assignLockerToUserFailure = createAction(
+    '[User] Assign Locker To User Failure',
+    props<{ error: string }>()
+);
+
 export const createUser = createAction(
     '[User] Create User',
     props<{ userData: any }>()

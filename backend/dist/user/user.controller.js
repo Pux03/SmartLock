@@ -31,6 +31,12 @@ let UserController = class UserController {
     findByCompany(companyId) {
         return this.userService.findByCompany(+companyId);
     }
+    findUsersWithoutLockers(companyId) {
+        return this.userService.findUsersWithoutLockers(+companyId);
+    }
+    assignLockerToUser(id, body) {
+        return this.userService.assignLockerToUser(+id, body.lockerId);
+    }
     findOne(id) {
         return this.userService.findOne(+id);
     }
@@ -62,6 +68,21 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "findByCompany", null);
+__decorate([
+    (0, common_1.Get)('without-lockers/:companyId'),
+    __param(0, (0, common_1.Param)('companyId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "findUsersWithoutLockers", null);
+__decorate([
+    (0, common_1.Put)(':id/assign-locker'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "assignLockerToUser", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

@@ -1,7 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { LockerGroup } from '../../../core/services/lockerGroup.services';
+import { AuthService } from '../../../core/services/auth.services';
+import * as UserActions from '../../../store/user/user.actions';
+import * as UserSelectors from '../../../store/user/user.selectors';
 
 export type LockerStatus = 'FREE';
 
@@ -21,12 +25,13 @@ export interface LockerData {
     templateUrl: './locker.html',
     styleUrls: ['./locker.css']
 })
-export class Locker {
+export class Locker implements OnInit {
 
     @Input() locker!: LockerData;
     @Input() viewMode: boolean = false;
     @Input() editMode: boolean = false;
     @Input() isPositionFree!: (x: number, y: number) => boolean;
+    @Input() companyId: number = 0;
 
     @Output() onAdd = new EventEmitter<string>();
     @Output() onUpdate = new EventEmitter<LockerData>();
@@ -37,6 +42,55 @@ export class Locker {
     isEditing: boolean = false;
     isSaving: boolean = false;
     localLocker!: LockerData;
+    selectedUserId: number | null = null;
+    usersWithoutLockers: any[] = [];
+    loading: boolean = false;
+
+    private store = inject(Store);
+    private authService = inject(AuthService);
+
+    ngOnInit() {
+        if (this.companyId) {
+            this.loadUsersWithoutLockers();
+        }
+
+        // Subscribe to users without lockers from store
+        this.store.select(UserSelectors.selectUsersWithoutLockers).subscribe(users => {
+            this.usersWithoutLockers = users;
+        });
+
+        // Subscribe to loading state
+        this.store.select(UserSelectors.selectUserLoading).subscribe(loading => {
+            this.loading = loading;
+        });
+    }
+
+    loadUsersWithoutLockers() {
+        if (this.companyId) {
+            this.store.dispatch(UserActions.loadUsersWithoutLockers({ companyId: this.companyId }));
+        }
+    }
+
+    assignUserToLocker() {
+        if (!this.selectedUserId) {
+            alert('Please select a user to assign');
+            return;
+        }
+
+        if (typeof this.locker.id === 'string') {
+            alert('Cannot assign user to temporary locker');
+            return;
+        }
+
+        this.store.dispatch(UserActions.assignLockerToUser({
+            userId: this.selectedUserId,
+            lockerId: this.locker.id as number,
+            companyId: this.companyId
+        }));
+
+        // Reset selection after assignment
+        this.selectedUserId = null;
+    }
 
     get isInEditMode(): boolean {
         return this.editMode && this.isEditing;
@@ -90,13 +144,17 @@ export class Locker {
         }
     }
 
-
     getStatusColor(status: string): string {
         switch (status) {
-            case 'UNLOCKED': return 'green';
-            case 'LOCKED': return 'red';
-            case 'UNOCCUPIED': return 'gray';
+            case 'OCCUPIED': return 'red';
+            case 'FREE': return 'GREEN';
             default: return 'YELLOW';
         }
+    }
+
+    getUserFullName(userId: number | null): string {
+        if (!userId) return 'Assign user';
+        const user = this.usersWithoutLockers.find(u => u.id === userId);
+        return user ? `${user.firstName} ${user.lastName}` : 'Assign user';
     }
 }

@@ -3,9 +3,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { Repository, IsNull } from 'typeorm';
 import { Company } from 'src/company/entities/company.entity';
 import { Locker } from 'src/locker/entities/locker.entity';
+import { LockerStatus } from 'src/common/enums/locker_status';
 import { combineAll } from 'rxjs';
 
 @Injectable()
@@ -51,6 +52,16 @@ export class UserService {
     });
   }
 
+  findUsersWithoutLockers(companyId: number) {
+    return this.userRepository.find({
+      where: {
+        company: { id: companyId },
+        locker: IsNull()
+      },
+      relations: ['company']
+    });
+  }
+
   findOne(id: number) {
     return this.userRepository.findOne({ where: { id } });
   }
@@ -63,10 +74,15 @@ export class UserService {
       throw new Error('User or Locker not found');
     }
 
-    locker.user = user;
+    // Update the user's locker reference
+    user.locker = locker;
+    await this.userRepository.save(user);
+
+    // Update locker status to OCCUPIED
+    locker.status = LockerStatus.OCCUPIED;
     await this.lockerRepository.save(locker);
 
-    return locker;
+    return user;
   }
 
 

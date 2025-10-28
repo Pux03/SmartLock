@@ -16,6 +16,13 @@ interface LockerGroup {
     lockers: LockerData[];
 }
 
+interface User {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+}
+
 @Component({
     selector: 'app-view-locker-groups',
     standalone: true,
@@ -29,6 +36,8 @@ export class ViewLockerGroups implements OnInit {
     selectedGroup: LockerGroup | null = null;
     companyId: number = 0;
     lockers: LockerData[] = [];
+    usersWithoutLockers: User[] = [];
+    selectedUserForAssignment: { [lockerId: string]: number | null } = {};
 
     private store = inject(Store);
 
@@ -44,6 +53,7 @@ export class ViewLockerGroups implements OnInit {
         if (id) {
             this.companyId = id;
             this.fetchLockerGroups();
+            this.loadUsersWithoutLockers();
         }
 
         // Subscribe to locker groups from store
@@ -57,6 +67,7 @@ export class ViewLockerGroups implements OnInit {
             if (this.lockerGroups.length > 0 && !this.selectedGroup) {
                 this.selectedGroup = this.lockerGroups[0];
                 this.lockers = this.selectedGroup.lockers;
+                this.initializeUserSelections();
             }
         });
 
@@ -71,10 +82,31 @@ export class ViewLockerGroups implements OnInit {
         this.store.dispatch(LockerGroupActions.loadLockerGroups({ companyId: this.companyId }));
     }
 
+    loadUsersWithoutLockers() {
+        this.companyServices.getUsersWithoutLockers(this.companyId).subscribe({
+            next: (users) => {
+                this.usersWithoutLockers = users;
+            },
+            error: (err) => {
+                console.error('Failed to load users without lockers:', err);
+            }
+        });
+    }
+
+    initializeUserSelections() {
+        this.selectedUserForAssignment = {};
+        if (this.selectedGroup) {
+            this.selectedGroup.lockers.forEach(locker => {
+                this.selectedUserForAssignment[locker.id] = null;
+            });
+        }
+    }
+
     selectGroup(group: LockerGroup | null) {
         if (!group) return;
         this.selectedGroup = group;
         this.lockers = group.lockers;
+        this.initializeUserSelections();
     }
 
     trackByLocker(index: number, item: LockerData) {
@@ -115,11 +147,21 @@ export class ViewLockerGroups implements OnInit {
         // });
     }
 
+    assignUserToLocker(lockerId: number | string) {
+        // This method is no longer needed as assignment is handled in the locker component
+    }
+
     getLockerStyle(locker: LockerData) {
         return {
             position: 'absolute',
             left: `${locker.x * 280}px`,
             top: `${locker.y * 240}px`
         };
+    }
+
+    getUserFullName(userId: number | null): string {
+        if (!userId) return 'Select user';
+        const user = this.usersWithoutLockers.find(u => u.id === userId);
+        return user ? `${user.firstName} ${user.lastName}` : 'Select user';
     }
 }

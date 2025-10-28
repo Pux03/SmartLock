@@ -7,6 +7,10 @@ export declare class UserController {
     create(createUserDto: CreateUserDto): Promise<import("./entities/user.entity").User>;
     findAll(): Promise<import("./entities/user.entity").User[]>;
     findByCompany(companyId: string): Promise<import("./entities/user.entity").User[]>;
+    findUsersWithoutLockers(companyId: string): Promise<import("./entities/user.entity").User[]>;
+    assignLockerToUser(id: string, body: {
+        lockerId: number;
+    }): Promise<import("./entities/user.entity").User>;
     findOne(id: string): Promise<import("./entities/user.entity").User | null>;
     update(id: string, updateUserDto: UpdateUserDto): string;
     remove(id: string): string;

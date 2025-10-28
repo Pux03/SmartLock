@@ -19,6 +19,7 @@ const user_entity_1 = require("./entities/user.entity");
 const typeorm_2 = require("typeorm");
 const company_entity_1 = require("../company/entities/company.entity");
 const locker_entity_1 = require("../locker/entities/locker.entity");
+const locker_status_1 = require("../common/enums/locker_status");
 let UserService = class UserService {
     userRepository;
     companyRepository;
@@ -59,6 +60,15 @@ let UserService = class UserService {
             relations: ['company', 'locker']
         });
     }
+    findUsersWithoutLockers(companyId) {
+        return this.userRepository.find({
+            where: {
+                company: { id: companyId },
+                locker: (0, typeorm_2.IsNull)()
+            },
+            relations: ['company']
+        });
+    }
     findOne(id) {
         return this.userRepository.findOne({ where: { id } });
     }
@@ -68,9 +78,11 @@ let UserService = class UserService {
         if (!user || !locker) {
             throw new Error('User or Locker not found');
         }
-        locker.user = user;
+        user.locker = locker;
+        await this.userRepository.save(user);
+        locker.status = locker_status_1.LockerStatus.OCCUPIED;
         await this.lockerRepository.save(locker);
-        return locker;
+        return user;
     }
     update(id, updateUserDto) {
         return `This action updates a #${id} user`;

@@ -36,6 +36,10 @@ export class CompanyService {
         return this.http.get<any[]>(`${api}/user/company/${companyId}`);
     }
 
+    getUsersWithoutLockers(companyId: number) {
+        return this.http.get<any[]>(`${api}/user/without-lockers/${companyId}`);
+    }
+
     createUser(userData: any) {
         return this.http.post<any>(`${api}/user`, userData);
     }

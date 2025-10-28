@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -20,6 +20,16 @@ export class UserController {
   @Get('company/:companyId')
   findByCompany(@Param('companyId') companyId: string) {
     return this.userService.findByCompany(+companyId);
+  }
+
+  @Get('without-lockers/:companyId')
+  findUsersWithoutLockers(@Param('companyId') companyId: string) {
+    return this.userService.findUsersWithoutLockers(+companyId);
+  }
+
+  @Put(':id/assign-locker')
+  assignLockerToUser(@Param('id') id: string, @Body() body: { lockerId: number }) {
+    return this.userService.assignLockerToUser(+id, body.lockerId);
   }
 
   @Get(':id')

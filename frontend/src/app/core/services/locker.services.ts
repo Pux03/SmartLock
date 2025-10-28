@@ -40,4 +40,12 @@ export class LockerServices {
     getLocker(id: number) {
         return this.http.get<Locker>(`${api}/locker/${id}`);
     }
+
+    assignLockerToUser(userId: number, lockerId: number) {
+        return this.http.put(
+            `http://localhost:3000/user/${userId}/assign-locker`,
+            { lockerId },
+            { headers: { 'Content-Type': 'application/json' }, withCredentials: true }
+        );
+    }
 }

@@ -108,6 +108,23 @@
     </button>
   </div>
 
+  <!-- User assignment section (only for FREE lockers in view mode) -->
+  <div class="user-assignment" *ngIf="viewMode && locker.status === 'FREE' && companyId">
+    <select [(ngModel)]="selectedUserId" class="user-select" [disabled]="loading">
+      <option [ngValue]="null">Assign user</option>
+      <option *ngFor="let user of usersWithoutLockers" [ngValue]="user.id">
+        {{ user.firstName }} {{ user.lastName }} ({{ user.email }})
+      </option>
+    </select>
+    <button
+      (click)="assignUserToLocker()"
+      class="assign-btn"
+      [disabled]="!selectedUserId || loading"
+    >
+      {{ loading ? 'Assigning...' : 'Assign' }}
+    </button>
+  </div>
+
   <div class="locker-info">
     <div class="position-indicator">({{ locker.x }}, {{ locker.y }})</div>
     <div class="status" [ngStyle]="{ color: getStatusColor(locker.status) }">
