@@ -8,7 +8,8 @@ export declare class LockerController {
     addMultiple(lockers: CreateLockerDto[]): Promise<import("./entities/locker.entity").Locker[]>;
     findAll(): Promise<import("./entities/locker.entity").Locker[]>;
     findByLockerGroup(lockerGroupId: string): string;
-    findOne(id: string): string;
+    findOne(id: string): Promise<import("./entities/locker.entity").Locker | null>;
     update(id: string, updateLockerDto: UpdateLockerDto): string;
     remove(id: string): string;
+    toggleLock(id: string): Promise<import("./entities/locker.entity").Locker>;
 }

@@ -10,7 +10,8 @@ export declare class LockerService {
     create(createLockerDto: CreateLockerDto): Promise<Locker>;
     findAll(): Promise<Locker[]>;
     findByLockerGroup(lockerGroupId: number): string;
-    findOne(id: number): string;
+    findOne(id: number): Promise<Locker | null>;
     update(id: number, updateLockerDto: UpdateLockerDto): string;
     remove(id: number): string;
+    toggleLockerLock(lockerId: number): Promise<Locker>;
 }

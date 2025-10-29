@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Locker } from './entities/locker.entity';
 import { Repository } from 'typeorm';
 import { LockerGroup } from 'src/lockergroup/entities/lockergroup.entity';
+import { LockedState } from 'src/common/enums/locker_state';
 
 @Injectable()
 export class LockerService {
@@ -24,7 +25,7 @@ export class LockerService {
       x: createLockerDto.x,
       y: createLockerDto.y,
       status: createLockerDto.status,
-      locked: createLockerDto.locked,
+      locked: createLockerDto.locked || LockedState.LOCKED, // Default to LOCKED if not provided
     })
 
     return this.lockerRepository.save(locker);
@@ -40,7 +41,7 @@ export class LockerService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} locker`;
+    return this.lockerRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateLockerDto: UpdateLockerDto) {
@@ -49,5 +50,15 @@ export class LockerService {
 
   remove(id: number) {
     return `This action removes a #${id} locker`;
+  }
+
+  async toggleLockerLock(lockerId: number): Promise<Locker> {
+    const locker = await this.lockerRepository.findOne({ where: { id: lockerId } });
+    if (!locker) {
+      throw new NotFoundException(`Locker with ID ${lockerId} not found`);
+    }
+
+    locker.locked = locker.locked === LockedState.LOCKED ? LockedState.UNLOCKED : LockedState.LOCKED;
+    return this.lockerRepository.save(locker);
   }
 }

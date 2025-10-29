@@ -1,0 +1,55 @@
+<div class="user-container">
+  <h2>User Dashboard</h2>
+
+  <ng-container *ngIf="user$ | async as user">
+    <div class="user-info">
+      <h3>Welcome, {{ user.firstName }} {{ user.lastName }}</h3>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Role:</strong> {{ user.role }}</p>
+
+      <!-- Prikaz LOCKER-a iz STORE-a -->
+      <ng-container *ngIf="locker$ | async as locker; else noLocker">
+        <div class="locker-section">
+          <h4>Your Locker</h4>
+          <app-locker [locker]="locker" [viewMode]="true"></app-locker>
+
+          <div class="locker-actions">
+            <p>
+              <strong>Status:</strong>
+              <span class="status-badge" [class]="getLockerStatusClass(locker)">
+                {{ getLockerStatus(locker) }}
+              </span>
+            </p>
+
+            <button
+              (click)="toggleLockerLock(locker.id)"
+              [disabled]="loading$ | async"
+              class="toggle-btn"
+              [class]="locker.locked === 'LOCKED' ? 'unlock-btn' : 'lock-btn'"
+            >
+              {{
+                (loading$ | async)
+                  ? 'Loading...'
+                  : locker.locked === 'LOCKED'
+                  ? 'Unlock Locker'
+                  : 'Lock Locker'
+              }}
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Ako korisnik nema locker -->
+      <ng-template #noLocker>
+        <div class="no-locker">
+          <p>You don't have a locker assigned yet.</p>
+        </div>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <!-- Loading stanje -->
+  <div *ngIf="!(user$ | async)" class="loading">
+    <p>Loading user information...</p>
+  </div>
+</div>

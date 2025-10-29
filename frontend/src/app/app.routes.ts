@@ -5,6 +5,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
 import { Company } from './shared/components/company/company';
 import { Unauthorized } from './shared/components/unauthorized/unauthorized';
+import { User } from './shared/components/user/user';
 
 export const routes: Routes = [
     { path: '', redirectTo: "/login", pathMatch: 'full' },
@@ -16,5 +17,6 @@ export const routes: Routes = [
         canActivate: [RoleGuard, AuthGuard],
         data: { role: 'ADMIN' },
     },
+    { path: 'user', component: User, canActivate: [RoleGuard, AuthGuard], data: { role: 'USER' } },
     { path: 'unauthorized', component: Unauthorized },
 ];

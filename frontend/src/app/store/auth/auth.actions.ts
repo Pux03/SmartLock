@@ -31,3 +31,20 @@ export const registerFailure = createAction(
 );
 
 export const logout = createAction('[Auth] Logout');
+
+export const verify = createAction('[Auth] Verify');
+
+export const verifySuccess = createAction(
+    '[Auth] Verify Success',
+    props<{ user: any }>()
+);
+
+export const verifyFailure = createAction(
+    '[Auth] Verify Failure',
+    props<{ error: any }>()
+);
+
+export const updateUserLocker = createAction(
+    '[Auth] Update User Locker',
+    props<{ locker: any }>()
+);

@@ -8,10 +8,10 @@ const api = environment.apiUrl;
 export interface Locker {
     id: number;
     serial: string;
-    pin: string;
     x: number;
     y: number;
     status: string;
+    locked: string;
     lockerGroupId: number;
 }
 
@@ -29,6 +29,10 @@ export class LockerServices {
         return this.http.get<Locker[]>(`${api}/locker/group/${lockerGroupId}`);
     }
 
+    getAllLockers() {
+        return this.http.get<Locker[]>(`${api}/locker`);
+    }
+
     updateLocker(id: number | string, data: Partial<Locker>) {
         return this.http.patch<Locker>(`${api}/locker/${id}`, data);
     }
@@ -43,9 +47,13 @@ export class LockerServices {
 
     assignLockerToUser(userId: number, lockerId: number) {
         return this.http.put(
-            `http://localhost:3000/user/${userId}/assign-locker`,
+            `${api}/user/${userId}/assign-locker`,
             { lockerId },
             { headers: { 'Content-Type': 'application/json' }, withCredentials: true }
         );
+    }
+
+    toggleLockerLock(lockerId: number) {
+        return this.http.put<Locker>(`${api}/locker/${lockerId}/toggle-lock`, {});
     }
 }

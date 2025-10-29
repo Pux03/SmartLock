@@ -44,6 +44,9 @@ let LockerController = class LockerController {
     remove(id) {
         return this.lockerService.remove(+id);
     }
+    toggleLock(id) {
+        return this.lockerService.toggleLockerLock(+id);
+    }
 };
 exports.LockerController = LockerController;
 __decorate([
@@ -95,6 +98,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], LockerController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Put)(':id/toggle-lock'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], LockerController.prototype, "toggleLock", null);
 exports.LockerController = LockerController = __decorate([
     (0, common_1.Controller)('locker'),
     __metadata("design:paramtypes", [locker_service_1.LockerService])

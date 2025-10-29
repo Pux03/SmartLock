@@ -6,4 +6,12 @@ export class UserResponseDto {
     firstName?: string;
     lastName?: string;
     role: UserRole;
+    locker?: {
+        id: number;
+        serial: string;
+        x: number;
+        y: number;
+        status: string;
+        locked: string;
+    };
 }

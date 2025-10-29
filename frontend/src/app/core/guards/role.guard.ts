@@ -28,7 +28,6 @@ export class RoleGuard implements CanActivate {
                         return false;
                     }
                 }
-
                 const requiredRole = route.data['role'];
 
                 if (!requiredRole) {

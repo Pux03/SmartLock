@@ -7,6 +7,7 @@ class UserResponseDto {
     firstName;
     lastName;
     role;
+    locker;
 }
 exports.UserResponseDto = UserResponseDto;
 //# sourceMappingURL=response-user.dto.js.map

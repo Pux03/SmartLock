@@ -48,5 +48,27 @@ export const authReducer = createReducer(
         error,
         loading: false,
     })),
-    on(AuthActions.logout, () => initialState)
+    on(AuthActions.logout, () => initialState),
+    on(AuthActions.verify, (state) => ({
+        ...state,
+        loading: true,
+        error: null,
+    })),
+    on(AuthActions.verifySuccess, (state, { user }) => ({
+        ...state,
+        user,
+        loading: false,
+    })),
+    on(AuthActions.verifyFailure, (state, { error }) => ({
+        ...state,
+        error,
+        loading: false,
+    })),
+    on(AuthActions.updateUserLocker, (state, { locker }) => ({
+        ...state,
+        user: state.user ? {
+            ...state.user,
+            locker: locker
+        } : state.user
+    }))
 );

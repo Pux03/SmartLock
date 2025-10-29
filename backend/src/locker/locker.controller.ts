@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { LockerService } from './locker.service';
 import { CreateLockerDto } from './dto/create-locker.dto';
 import { UpdateLockerDto } from './dto/update-locker.dto';
@@ -44,5 +44,10 @@ export class LockerController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.lockerService.remove(+id);
+  }
+
+  @Put(':id/toggle-lock')
+  toggleLock(@Param('id') id: string) {
+    return this.lockerService.toggleLockerLock(+id);
   }
 }

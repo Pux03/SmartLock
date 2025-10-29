@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const locker_entity_1 = require("./entities/locker.entity");
 const typeorm_2 = require("typeorm");
 const lockergroup_entity_1 = require("../lockergroup/entities/lockergroup.entity");
+const locker_state_1 = require("../common/enums/locker_state");
 let LockerService = class LockerService {
     lockerRepository;
     lockerGroupRepository;
@@ -35,7 +36,7 @@ let LockerService = class LockerService {
             x: createLockerDto.x,
             y: createLockerDto.y,
             status: createLockerDto.status,
-            locked: createLockerDto.locked,
+            locked: createLockerDto.locked || locker_state_1.LockedState.LOCKED,
         });
         return this.lockerRepository.save(locker);
     }
@@ -46,13 +47,21 @@ let LockerService = class LockerService {
         return `This action returns lockers for locker group #${lockerGroupId}`;
     }
     findOne(id) {
-        return `This action returns a #${id} locker`;
+        return this.lockerRepository.findOne({ where: { id } });
     }
     update(id, updateLockerDto) {
         return `This action updates a #${id} locker`;
     }
     remove(id) {
         return `This action removes a #${id} locker`;
+    }
+    async toggleLockerLock(lockerId) {
+        const locker = await this.lockerRepository.findOne({ where: { id: lockerId } });
+        if (!locker) {
+            throw new common_1.NotFoundException(`Locker with ID ${lockerId} not found`);
+        }
+        locker.locked = locker.locked === locker_state_1.LockedState.LOCKED ? locker_state_1.LockedState.UNLOCKED : locker_state_1.LockedState.LOCKED;
+        return this.lockerRepository.save(locker);
     }
 };
 exports.LockerService = LockerService;

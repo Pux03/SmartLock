@@ -12,10 +12,10 @@ export type LockerStatus = 'FREE';
 export interface LockerData {
     id: number | string;
     serial: string;
-    group: LockerGroup;
+    group?: LockerGroup;
     x: number;
     y: number;
-    status: LockerStatus;
+    status: string;
 }
 
 @Component({

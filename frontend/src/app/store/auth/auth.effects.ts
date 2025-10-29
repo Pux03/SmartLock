@@ -31,7 +31,8 @@ export class AuthEffects {
                                 firstName: tokenPayload.firstName,
                                 lastName: tokenPayload.lastName,
                                 role: tokenPayload.role,
-                                companyId: tokenPayload.companyId
+                                companyId: tokenPayload.companyId,
+                                lockerId: tokenPayload.locker.id // Only store locker ID, not the locker object
                             } : null;
 
                             if (user) {
@@ -55,12 +56,13 @@ export class AuthEffects {
             ofType(AuthActions.loginSuccess),
             tap((action) => {
 
-                const redirectUrl = action.user.role === 'SUPER_ADMIN'
-                    ? '/super-admin'
-                    : action.user.role === 'ADMIN' ? `/company` : '/';
+                const redirectUrl =
+                    action.user.role === 'SUPER_ADMIN' ? '/super-admin'
+                        : action.user.role === 'ADMIN' ? `/company`
+                            : action.user.role === 'USER' ? '/user' : '/';
                 this.router.navigate([redirectUrl]);
             })
-        ), { dispatch: false } // Važno: effect ne dispatch-uje novu akciju
+        ), { dispatch: false }
     );
 
 
@@ -97,6 +99,18 @@ export class AuthEffects {
         )
     );
 
+    verify$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AuthActions.verify),
+            mergeMap(() =>
+                this.http.get<any>(`${api}/auth/verify`, { withCredentials: true }).pipe(
+                    map((user) => AuthActions.verifySuccess({ user })),
+                    catchError((error) => of(AuthActions.verifyFailure({ error: error.message })))
+                )
+            )
+        )
+    );
+
     private decodeJwtToken(token: string): any {
         try {
             const base64Url = token.split('.')[1];
@@ -111,22 +125,6 @@ export class AuthEffects {
         } catch (error) {
             console.error('Error decoding JWT token:', error);
             return null;
-        }
-    }
-
-    private redirectBasedOnRole(user: any) {
-        switch (user.role) {
-            case 'SUPER_ADMIN':
-                this.router.navigate(['/super-admin']);
-                break;
-            case 'COMPANY_ADMIN':
-                this.router.navigate(['/company']);
-                break;
-            case 'USER':
-                this.router.navigate(['/']);
-                break;
-            default:
-                this.router.navigate(['/']);
         }
     }
 }

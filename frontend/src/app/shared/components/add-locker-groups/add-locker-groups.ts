@@ -113,7 +113,7 @@ export class AddLockerGroups implements OnInit {
                 status: locker.status,
                 x: locker.x,
                 y: locker.y,
-                locked: 'UNLOCKED',
+                locked: 'LOCKED',
             }));
 
             this.store.dispatch(LockerGroupActions.createLockerGroup({
