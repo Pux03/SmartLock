@@ -54,12 +54,10 @@ export class Locker implements OnInit {
             this.loadUsersWithoutLockers();
         }
 
-        // Subscribe to users without lockers from store
         this.store.select(UserSelectors.selectUsersWithoutLockers).subscribe(users => {
             this.usersWithoutLockers = users;
         });
 
-        // Subscribe to loading state
         this.store.select(UserSelectors.selectUserLoading).subscribe(loading => {
             this.loading = loading;
         });
@@ -88,7 +86,6 @@ export class Locker implements OnInit {
             companyId: this.companyId
         }));
 
-        // Reset selection after assignment
         this.selectedUserId = null;
     }
 

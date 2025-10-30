@@ -6,19 +6,31 @@
           <div class="field-label">Name</div>
           <div class="user-fullname">{{ user.firstName }} {{ user.lastName }}</div>
         </div>
+
         <div class="user-field">
           <div class="field-label">Email</div>
           <div class="user-email">{{ user.email }}</div>
         </div>
+
         <div class="user-field">
           <div class="field-label">Role</div>
           <div class="user-role">{{ user.role }}</div>
         </div>
+
         <div class="user-field">
           <div class="field-label">Locker</div>
           <div class="user-locker">
-            <div>{{ user.locker || 'No locker' }}</div>
-            <div>{{ user.locker?.serial || '' }}</div>
+            <div *ngIf="user.locker; else noLocker">
+              <div>Serial: {{ user.locker.serial }}</div>
+
+              <ng-container *ngIf="lockerGroups$ | async as groups">
+                <div>Group: {{ user.locker.group?.name }}</div>
+              </ng-container>
+            </div>
+
+            <ng-template #noLocker>
+              <div>No locker assigned</div>
+            </ng-template>
           </div>
         </div>
       </div>

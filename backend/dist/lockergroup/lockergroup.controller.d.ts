@@ -9,5 +9,5 @@ export declare class LockergroupController {
     findByCompany(companyId: string): Promise<import("./entities/lockergroup.entity").LockerGroup[]>;
     findOne(id: string): Promise<import("./entities/lockergroup.entity").LockerGroup>;
     update(id: string, updateLockergroupDto: UpdateLockergroupDto): string;
-    remove(id: string): string;
+    remove(id: string): Promise<void>;
 }

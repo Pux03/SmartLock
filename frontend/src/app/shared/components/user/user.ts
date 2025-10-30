@@ -6,6 +6,7 @@ import { selectUser } from '../../../store/auth/auth.selectors';
 import { toggleLockerLock } from '../../../store/locker/locker.actions';
 import { selectLockersLoading, selectLockerById, selectLockerState } from '../../../store/locker/locker.selectors';
 import { loadLockerById } from '../../../store/locker/locker.actions';
+import { logout } from '../../../store/auth/auth.actions';
 import { Locker } from '../locker/locker';
 
 @Component({
@@ -24,7 +25,6 @@ export class User implements OnInit {
         switchMap(user => {
             if (!user?.lockerId) return of(null);
 
-            // ✅ učitaj samo taj locker ako ga nema u store-u
             this.store.dispatch(loadLockerById({ lockerId: user.lockerId }));
             return this.store.select(selectLockerById(user.lockerId));
         })
@@ -56,5 +56,9 @@ export class User implements OnInit {
     getCurrentLocker(user: any): Observable<any> {
         if (!user || !user.lockerId) return new Observable();
         return this.store.select(selectLockerById(user.lockerId));
+    }
+
+    logout() {
+        this.store.dispatch(logout());
     }
 }

@@ -13,7 +13,6 @@ export class LockerEffects {
     private lockerService = inject(LockerServices);
     private store = inject(Store);
 
-    // Load Lockers Effect
     loadLockers$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LockerActions.loadLockers),
@@ -26,7 +25,6 @@ export class LockerEffects {
         )
     );
 
-    // Toggle Locker Lock Effect
     toggleLockerLock$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LockerActions.toggleLockerLock),
@@ -39,15 +37,13 @@ export class LockerEffects {
         )
     );
 
-    // Assign Locker to User Effect
     assignLockerToUser$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LockerActions.assignLockerToUser),
             mergeMap(({ userId, lockerId }) =>
                 this.lockerService.assignLockerToUser(userId, lockerId).pipe(
                     map(() => {
-                        // We need to reload the locker to get updated data
-                        return LockerActions.loadLockers({ lockerGroupId: 0 }); // This will be handled by the component
+                        return LockerActions.loadLockers({ lockerGroupId: 0 });
                     }),
                     catchError(error => of(LockerActions.assignLockerToUserFailure({ error: error.message })))
                 )
@@ -55,7 +51,6 @@ export class LockerEffects {
         )
     );
 
-    // Update Locker Effect
     updateLocker$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LockerActions.updateLocker),
@@ -68,7 +63,6 @@ export class LockerEffects {
         )
     );
 
-    // Delete Locker Effect
     deleteLocker$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LockerActions.deleteLocker),

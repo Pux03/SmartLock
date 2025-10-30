@@ -32,7 +32,7 @@ export class AuthEffects {
                                 lastName: tokenPayload.lastName,
                                 role: tokenPayload.role,
                                 companyId: tokenPayload.companyId,
-                                lockerId: tokenPayload.locker.id // Only store locker ID, not the locker object
+                                lockerId: tokenPayload.locker?.id || null
                             } : null;
 
                             if (user) {
@@ -109,6 +109,18 @@ export class AuthEffects {
                 )
             )
         )
+    );
+
+    logout$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AuthActions.logout),
+            tap(() => {
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+                this.router.navigate(['/login']);
+            })
+        ),
+        { dispatch: false }
     );
 
     private decodeJwtToken(token: string): any {

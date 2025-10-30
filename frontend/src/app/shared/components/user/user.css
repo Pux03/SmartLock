@@ -168,7 +168,6 @@
     color: #6c757d;
 }
 
-/* Animation for locker state change */
 .locker-box.status-locked .locker-door {
     background: linear-gradient(135deg, #d7ccc8, #bcaaa4);
 }
@@ -176,4 +175,20 @@
 .locker-box.status-unlocked .locker-door {
     background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
     transform: translateX(-10px);
+}
+
+.logout-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: sans-serif;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
 }

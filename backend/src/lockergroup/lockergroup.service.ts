@@ -3,8 +3,10 @@ import { CreateLockergroupDto } from './dto/create-lockergroup.dto';
 import { UpdateLockergroupDto } from './dto/update-lockergroup.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LockerGroup } from './entities/lockergroup.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Company } from 'src/company/entities/company.entity';
+import { Locker } from 'src/locker/entities/locker.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class LockergroupService {
@@ -12,7 +14,11 @@ export class LockergroupService {
     @InjectRepository(LockerGroup)
     private lockerGroupRepository: Repository<LockerGroup>,
     @InjectRepository(Company)
-    private companyRepository: Repository<Company>
+    private companyRepository: Repository<Company>,
+    @InjectRepository(Locker)
+    private lockerRepository: Repository<Locker>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>
   ) { }
   async create(createLockergroupDto: CreateLockergroupDto): Promise<LockerGroup> {
     const company = await this.companyRepository.findOne({ where: { id: createLockergroupDto.company.id } });
@@ -52,7 +58,34 @@ export class LockergroupService {
     return `This action updates a #${id} lockergroup`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} lockergroup`;
+  async remove(id: number): Promise<void> {
+    const lockerGroup = await this.lockerGroupRepository.findOne({
+      where: { id },
+      relations: ['lockers']
+    });
+
+    if (!lockerGroup) {
+      throw new NotFoundException('Locker group not found');
+    }
+
+    if (lockerGroup.lockers && lockerGroup.lockers.length > 0) {
+      const lockerIds = lockerGroup.lockers.map(locker => locker.id);
+
+      const usersWithLockers = await this.userRepository.find({
+        where: {
+          locker: { id: In(lockerIds) }
+        },
+        relations: ['locker']
+      });
+
+      for (const user of usersWithLockers) {
+        user.locker = null;
+        await this.userRepository.save(user);
+      }
+
+      await this.lockerRepository.remove(lockerGroup.lockers);
+    }
+
+    await this.lockerGroupRepository.remove(lockerGroup);
   }
 }

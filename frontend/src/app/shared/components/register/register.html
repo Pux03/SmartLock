@@ -1,6 +1,8 @@
 <div class="register-container">
   <h2>Create Company and Company Admin</h2>
 
+  <button (click)="logout()" class="logout-btn">Logout</button>
+
   <form (ngSubmit)="onRegister()" class="register-form">
     <div class="form-group">
       <label for="companyName">Company Name</label>

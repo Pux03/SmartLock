@@ -36,15 +36,30 @@
     width: 100%;
     align-items: center;
     justify-content: center;
-    gap: 3vh;
+    gap: 1em;
     background-color: #2980b9;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* senka oko cele sekcije */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 .avatar-container div{
     font-size: 1.3rem;
     color: white;
     font-family: sans-serif;
+}
+
+.logout-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: sans-serif;
+    font-size: 0.9rem;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
 }
 
 .data-section{

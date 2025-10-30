@@ -1,15 +1,17 @@
 import { Injectable, inject } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, mergeMap, of } from "rxjs";
+import { catchError, filter, map, mergeMap, of } from "rxjs";
 import { LockerGroupServices } from "../../core/services/lockerGroup.services";
 import { LockerServices } from "../../core/services/locker.services";
 import * as LockerGroupActions from './locker-group.actions';
+import { AuthService } from "../../core/services/auth.services";
 
 @Injectable()
 export class LockerGroupEffects {
     private actions$ = inject(Actions);
     private lockerGroupServices = inject(LockerGroupServices);
     private lockerServices = inject(LockerServices);
+    private authServices = inject(AuthService);
 
     createLockerGroup$ = createEffect(() =>
         this.actions$.pipe(
@@ -17,7 +19,6 @@ export class LockerGroupEffects {
             mergeMap(({ name, companyId, lockers }) =>
                 this.lockerGroupServices.createLockerGroup(name, companyId).pipe(
                     mergeMap(lockerGroup => {
-                        // After creating locker group, create the lockers
                         const lockerData = lockers.map(locker => ({
                             ...locker,
                             group: { id: lockerGroup.id }
@@ -81,4 +82,14 @@ export class LockerGroupEffects {
             )
         )
     );
+
+    refreshGroupsAfterDelete$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LockerGroupActions.deleteLockerGroupSuccess),
+            map(() => this.authServices.getCompanyId()),
+            filter((id): id is number => id !== null),
+            map((id) => LockerGroupActions.loadLockerGroups({ companyId: id }))
+        )
+    );
+
 }

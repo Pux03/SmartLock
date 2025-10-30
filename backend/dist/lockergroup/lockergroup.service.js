@@ -18,12 +18,18 @@ const typeorm_1 = require("@nestjs/typeorm");
 const lockergroup_entity_1 = require("./entities/lockergroup.entity");
 const typeorm_2 = require("typeorm");
 const company_entity_1 = require("../company/entities/company.entity");
+const locker_entity_1 = require("../locker/entities/locker.entity");
+const user_entity_1 = require("../user/entities/user.entity");
 let LockergroupService = class LockergroupService {
     lockerGroupRepository;
     companyRepository;
-    constructor(lockerGroupRepository, companyRepository) {
+    lockerRepository;
+    userRepository;
+    constructor(lockerGroupRepository, companyRepository, lockerRepository, userRepository) {
         this.lockerGroupRepository = lockerGroupRepository;
         this.companyRepository = companyRepository;
+        this.lockerRepository = lockerRepository;
+        this.userRepository = userRepository;
     }
     async create(createLockergroupDto) {
         const company = await this.companyRepository.findOne({ where: { id: createLockergroupDto.company.id } });
@@ -58,8 +64,29 @@ let LockergroupService = class LockergroupService {
     update(id, updateLockergroupDto) {
         return `This action updates a #${id} lockergroup`;
     }
-    remove(id) {
-        return `This action removes a #${id} lockergroup`;
+    async remove(id) {
+        const lockerGroup = await this.lockerGroupRepository.findOne({
+            where: { id },
+            relations: ['lockers']
+        });
+        if (!lockerGroup) {
+            throw new common_1.NotFoundException('Locker group not found');
+        }
+        if (lockerGroup.lockers && lockerGroup.lockers.length > 0) {
+            const lockerIds = lockerGroup.lockers.map(locker => locker.id);
+            const usersWithLockers = await this.userRepository.find({
+                where: {
+                    locker: { id: (0, typeorm_2.In)(lockerIds) }
+                },
+                relations: ['locker']
+            });
+            for (const user of usersWithLockers) {
+                user.locker = null;
+                await this.userRepository.save(user);
+            }
+            await this.lockerRepository.remove(lockerGroup.lockers);
+        }
+        await this.lockerGroupRepository.remove(lockerGroup);
     }
 };
 exports.LockergroupService = LockergroupService;
@@ -67,7 +94,11 @@ exports.LockergroupService = LockergroupService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(lockergroup_entity_1.LockerGroup)),
     __param(1, (0, typeorm_1.InjectRepository)(company_entity_1.Company)),
+    __param(2, (0, typeorm_1.InjectRepository)(locker_entity_1.Locker)),
+    __param(3, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository])
 ], LockergroupService);
 //# sourceMappingURL=lockergroup.service.js.map

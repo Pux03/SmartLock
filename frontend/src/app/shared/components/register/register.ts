@@ -7,6 +7,7 @@ import * as AuthActions from "../../../store/auth/auth.actions";
 import * as CompanyActions from "../../../store/company/company.actions";
 import { selectError } from "../../../store/auth/auth.selectors";
 import { selectCompanies, selectCompanyError, selectCompanyLoading } from "../../../store/company/company.selectors";
+import { logout } from "../../../store/auth/auth.actions";
 
 @Component({
     selector: "app-register",
@@ -38,13 +39,11 @@ export class Register {
             this.isLoading = loading;
         });
 
-        // Listen for company creation success to trigger user registration
         this.store.select(selectCompanies).subscribe((companies) => {
             if (companies && companies.length > 0) {
                 const latestCompany = companies[companies.length - 1];
                 if (latestCompany && latestCompany.id !== this.latestCompanyId) {
                     this.latestCompanyId = latestCompany.id;
-                    // Create user with COMPANY_ADMIN role and company ID
                     this.store.dispatch(AuthActions.register({
                         firstName: this.firstName,
                         lastName: this.lastName,
@@ -67,7 +66,10 @@ export class Register {
         this.errorMessage = "";
         this.latestCompanyId = null;
 
-        // Step 1: Create company using NgRx
         this.store.dispatch(CompanyActions.createCompany({ name: this.companyName }));
+    }
+
+    logout() {
+        this.store.dispatch(logout());
     }
 }

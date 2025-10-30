@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import * as CompanyActions from '../../../store/company/company.actions';
 import { selectCompanies, selectCompanyById, selectCompanyLoading } from '../../../store/company/company.selectors';
 import { selectUser } from '../../../store/auth/auth.selectors';
+import { logout } from '../../../store/auth/auth.actions';
 import { Avatar } from '../avatar/avatar';
 import { ViewLockerGroups } from '../view-locker-groups/view-locker-groups';
 import { AddLockerGroups } from '../add-locker-groups/add-locker-groups';
@@ -40,17 +41,14 @@ export class Company {
     getCompany() {
         this.store.select(selectUser).subscribe(user => {
             if (user && user.companyId) {
-                // Check if company is already in store
                 this.store.select(selectCompanyById(user.companyId)).subscribe(company => {
                     if (company) {
                         this.companyName = company.name;
                     } else {
-                        // If company not in store, fetch it
                         this.store.dispatch(CompanyActions.getCompany({ id: user.companyId }));
                     }
                 });
 
-                // Listen for company updates
                 this.store.select(selectCompanies).subscribe(companies => {
                     const company = companies.find(c => c.id === user.companyId);
                     if (company) {
@@ -63,5 +61,9 @@ export class Company {
 
     selectView(view: string) {
         this.selected = view;
+    }
+
+    logout() {
+        this.store.dispatch(logout());
     }
 }

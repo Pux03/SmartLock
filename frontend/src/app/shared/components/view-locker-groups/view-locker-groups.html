@@ -24,6 +24,9 @@
   </select>
 
   <button (click)="fetchLockerGroups()" class="control-btn refresh-btn">Refresh</button>
+  <button (click)="deleteLockerGroup()" class="control-btn delete-btn" [disabled]="!selectedGroup">
+    Delete Group
+  </button>
 </div>
 
 <div *ngIf="isLoading" class="loading-overlay">Loading locker groups...</div>

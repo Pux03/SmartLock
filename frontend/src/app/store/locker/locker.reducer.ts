@@ -23,7 +23,6 @@ export const initialState: LockerState = lockerAdapter.getInitialState({
 export const lockerReducer = createReducer(
     initialState,
 
-    // Load Lockers
     on(LockerActions.loadLockers, (state, { lockerGroupId }) => ({
         ...state,
         loading: true,
@@ -39,7 +38,6 @@ export const lockerReducer = createReducer(
         })
     ),
 
-    // Load Locker By Id
     on(LockerActions.loadLockerById, (state) => ({
         ...state,
         loading: true,
@@ -67,7 +65,6 @@ export const lockerReducer = createReducer(
         error
     })),
 
-    // Toggle Locker Lock
     on(LockerActions.toggleLockerLock, (state) => ({
         ...state,
         loading: true,
@@ -87,7 +84,6 @@ export const lockerReducer = createReducer(
         error
     })),
 
-    // Assign Locker to User
     on(LockerActions.assignLockerToUser, (state) => ({
         ...state,
         loading: true,
@@ -107,7 +103,6 @@ export const lockerReducer = createReducer(
         error
     })),
 
-    // Update Locker
     on(LockerActions.updateLocker, (state) => ({
         ...state,
         loading: true,
@@ -127,7 +122,6 @@ export const lockerReducer = createReducer(
         error
     })),
 
-    // Delete Locker
     on(LockerActions.deleteLocker, (state) => ({
         ...state,
         loading: true,

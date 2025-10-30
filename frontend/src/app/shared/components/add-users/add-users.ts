@@ -55,7 +55,6 @@ export class AddUsers {
 
         this.store.dispatch(UserActions.createUser({ userData }));
 
-        // Reset form
         this.firstName = '';
         this.lastName = '';
         this.email = '';

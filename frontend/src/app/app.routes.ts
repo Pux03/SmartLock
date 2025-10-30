@@ -13,7 +13,7 @@ export const routes: Routes = [
     { path: 'super-admin', component: Register, canActivate: [RoleGuard], data: { role: 'SUPER_ADMIN' } },
     {
         path: 'company',
-        component: Company, // TODO: Replace with actual Company component when created
+        component: Company,
         canActivate: [RoleGuard, AuthGuard],
         data: { role: 'ADMIN' },
     },

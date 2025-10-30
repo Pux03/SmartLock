@@ -56,7 +56,6 @@ export class ViewLockerGroups implements OnInit {
             this.loadUsersWithoutLockers();
         }
 
-        // Subscribe to locker groups from store
         this.store.select(LockerGroupSelectors.selectAllLockerGroups).subscribe(lockerGroups => {
             this.lockerGroups = lockerGroups.map(group => ({
                 id: group.id,
@@ -71,14 +70,12 @@ export class ViewLockerGroups implements OnInit {
             }
         });
 
-        // Subscribe to loading state
         this.store.select(LockerGroupSelectors.selectLockerGroupLoading).subscribe(loading => {
             this.isLoading = loading;
         });
     }
 
     fetchLockerGroups() {
-        // Use the store to load locker groups
         this.store.dispatch(LockerGroupActions.loadLockerGroups({ companyId: this.companyId }));
     }
 
@@ -117,39 +114,6 @@ export class ViewLockerGroups implements OnInit {
         return !this.lockers.some(l => l.x === x && l.y === y);
     };
 
-    deleteLocker(lockerId: number | string) {
-        // if (!this.selectedGroup) return;
-
-        // this.lockerServices.deleteLocker(lockerId).subscribe({
-        //   next: () => {
-        //     this.selectedGroup!.lockers = this.selectedGroup!.lockers.filter(l => l.id !== lockerId);
-        //     this.lockers = this.selectedGroup!.lockers;
-        //   },
-        //   error: (err) => {
-        //     console.error('Failed to delete locker:', err);
-        //   }
-        // });
-    }
-
-    updateLocker(updatedLocker: LockerData) {
-        // this.lockerServices.updateLocker(updatedLocker.id, updatedLocker).subscribe({
-        //   next: (data) => {
-        //     this.lockers = this.lockers.map(lock =>
-        //       lock.id === updatedLocker.id ? data : lock
-        //     );
-        //     if (this.selectedGroup) {
-        //       this.selectedGroup.lockers = this.lockers;
-        //     }
-        //   },
-        //   error: (err) => {
-        //     console.error('Failed to update locker:', err);
-        //   }
-        // });
-    }
-
-    assignUserToLocker(lockerId: number | string) {
-        // This method is no longer needed as assignment is handled in the locker component
-    }
 
     getLockerStyle(locker: LockerData) {
         return {
@@ -163,5 +127,23 @@ export class ViewLockerGroups implements OnInit {
         if (!userId) return 'Select user';
         const user = this.usersWithoutLockers.find(u => u.id === userId);
         return user ? `${user.firstName} ${user.lastName}` : 'Select user';
+    }
+
+    deleteLockerGroup() {
+        if (!this.selectedGroup) {
+            alert('Please select a locker group to delete.');
+            return;
+        }
+
+        const groupName = this.selectedGroup.name;
+        const confirmation = confirm(`Are you sure you want to delete the locker group "${groupName}"? This action cannot be undone.`);
+
+        if (confirmation) {
+            const deletedGroupId = this.selectedGroup.id;
+            this.store.dispatch(LockerGroupActions.deleteLockerGroup({ id: deletedGroupId }));
+
+            this.selectedGroup = null;
+            this.lockers = [];
+        }
     }
 }

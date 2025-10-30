@@ -5,13 +5,14 @@ import { AuthService } from '../../../core/services/auth.services';
 import { CompanyService } from '../../../core/services/company.service';
 import * as UserActions from '../../../store/user/user.actions';
 import * as UserSelectors from '../../../store/user/user.selectors';
+import * as LockerGroupSelectors from '../../../store/locker-group/locker-group.selectors';
 
 @Component({
     selector: 'app-view-users',
     standalone: true,
     imports: [CommonModule],
     templateUrl: './view-users.html',
-    styleUrl: './view-users.css'
+    styleUrls: ['./view-users.css']
 })
 export class ViewUsers implements OnInit {
     companyId: number | null = null;
@@ -21,6 +22,8 @@ export class ViewUsers implements OnInit {
     private store = inject(Store);
     private authService = inject(AuthService);
     private companyService = inject(CompanyService);
+
+    lockerGroups$ = this.store.select(LockerGroupSelectors.selectAllLockerGroups);
 
     ngOnInit() {
         this.companyId = this.authService.getCompanyId();
@@ -44,5 +47,9 @@ export class ViewUsers implements OnInit {
         }
     }
 
+    getLockerGroupName(lockerId: number, groups: any[]): string {
+        const group = groups.find(g => g.lockers?.some((l: any) => l.id === lockerId));
+        return group ? group.name : 'No group';
+    }
 
 }

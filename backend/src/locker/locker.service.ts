@@ -25,7 +25,7 @@ export class LockerService {
       x: createLockerDto.x,
       y: createLockerDto.y,
       status: createLockerDto.status,
-      locked: createLockerDto.locked || LockedState.LOCKED, // Default to LOCKED if not provided
+      locked: createLockerDto.locked || LockedState.LOCKED,
     })
 
     return this.lockerRepository.save(locker);

@@ -1,7 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { Locker } from "../../core/services/locker.services";
 
-// Load Lockers
 export const loadLockers = createAction(
     '[Locker] Load Lockers',
     props<{ lockerGroupId: number }>()
@@ -21,7 +20,6 @@ export const loadLockersFailure = createAction(
     props<{ error: string }>()
 );
 
-// Toggle Locker Lock
 export const toggleLockerLock = createAction(
     '[Locker] Toggle Locker Lock',
     props<{ lockerId: number }>()
@@ -37,7 +35,6 @@ export const toggleLockerLockFailure = createAction(
     props<{ error: string }>()
 );
 
-// Assign Locker to User
 export const assignLockerToUser = createAction(
     '[Locker] Assign Locker To User',
     props<{ userId: number, lockerId: number }>()
@@ -53,7 +50,6 @@ export const assignLockerToUserFailure = createAction(
     props<{ error: string }>()
 );
 
-// Update Locker
 export const updateLocker = createAction(
     '[Locker] Update Locker',
     props<{ id: number, data: Partial<Locker> }>()
@@ -69,7 +65,6 @@ export const updateLockerFailure = createAction(
     props<{ error: string }>()
 );
 
-// Delete Locker
 export const deleteLocker = createAction(
     '[Locker] Delete Locker',
     props<{ id: number }>()
@@ -85,7 +80,6 @@ export const deleteLockerFailure = createAction(
     props<{ error: string }>()
 );
 
-// Load one locker
 export const loadLockerById = createAction(
     '[Locker] Load Locker By Id',
     props<{ lockerId: number }>()

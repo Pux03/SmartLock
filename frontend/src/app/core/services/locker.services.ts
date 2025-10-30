@@ -41,8 +41,11 @@ export class LockerServices {
         return this.http.delete(`${api}/locker/${id}`);
     }
 
-    getLocker(id: number) {
-        return this.http.get<Locker>(`${api}/locker/${id}`);
+    getLocker(lockerId: number) {
+        if (!lockerId || isNaN(lockerId)) {
+            throw new Error('Invalid lockerId');
+        }
+        return this.http.get<Locker>(`${api}/locker/${lockerId}`);
     }
 
     assignLockerToUser(userId: number, lockerId: number) {

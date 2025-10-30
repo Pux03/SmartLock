@@ -53,7 +53,7 @@ export class UserService {
       where: {
         company: { id: companyId }
       },
-      relations: ['company', 'locker']
+      relations: ['company', 'locker', 'locker.group']
     });
   }
 

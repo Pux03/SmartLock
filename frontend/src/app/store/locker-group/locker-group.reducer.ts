@@ -19,7 +19,6 @@ export const initialState: LockerGroupState = {
 export const lockerGroupReducer = createReducer(
     initialState,
 
-    // Create LockerGroup
     on(LockerGroupActions.createLockerGroup, (state) => ({
         ...state,
         loading: true,
@@ -36,7 +35,6 @@ export const lockerGroupReducer = createReducer(
         error
     })),
 
-    // Load LockerGroups
     on(LockerGroupActions.loadLockerGroups, (state) => ({
         ...state,
         loading: true,
@@ -53,7 +51,6 @@ export const lockerGroupReducer = createReducer(
         error
     })),
 
-    // Get LockerGroup
     on(LockerGroupActions.getLockerGroup, (state) => ({
         ...state,
         loading: true,
@@ -70,7 +67,6 @@ export const lockerGroupReducer = createReducer(
         error
     })),
 
-    // Update LockerGroup
     on(LockerGroupActions.updateLockerGroup, (state) => ({
         ...state,
         loading: true,
@@ -90,7 +86,6 @@ export const lockerGroupReducer = createReducer(
         error
     })),
 
-    // Delete LockerGroup
     on(LockerGroupActions.deleteLockerGroup, (state) => ({
         ...state,
         loading: true,
